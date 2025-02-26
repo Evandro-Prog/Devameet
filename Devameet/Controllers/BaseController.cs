@@ -9,7 +9,7 @@ namespace Devameet.Controllers
     [Authorize]
     public class BaseController : ControllerBase
     {
-        private readonly IUserRepository _userRepository;
+        protected readonly IUserRepository _userRepository;
 
         public BaseController(IUserRepository userRepository)
         {

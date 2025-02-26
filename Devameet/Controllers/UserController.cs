@@ -5,21 +5,19 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Devameet.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
+    [ApiController]    
     public class UserController : BaseController
     {
-        private readonly ILogger<UserController> _logger;
-        private readonly IUserRepository _userRepository;
+        private readonly ILogger<UserController> _logger;        
 
 
         public UserController(ILogger<UserController> logger, IUserRepository userRepository) : base(userRepository)
         {
-            _logger = logger;
-            _userRepository = userRepository;
+            _logger = logger;            
         }
 
         [HttpGet]
+        [Route("api/[controller]")]
         public IActionResult GetUser()
         {
             try
@@ -66,6 +64,57 @@ namespace Devameet.Controllers
                     Status = StatusCodes.Status500InternalServerError
                 });
             }            
+        }
+
+        [HttpPut]
+        [Route("api/[controller]")]
+        public IActionResult UpdateUser([FromBody]UserRequestDto userdto)
+        {
+            try
+            {
+                User user = GetToken();
+                if(user != null)
+                {
+                    if(!string.IsNullOrEmpty(user.Name) && !string.IsNullOrWhiteSpace(user.Name) &&
+                        !string.IsNullOrEmpty(user.Avatar) && !string.IsNullOrWhiteSpace(user.Avatar))
+                    {
+                        user.Avatar = userdto.Avatar;
+                        user.Name = userdto.Name;
+
+                        _userRepository.UpdateUser(user);
+
+                        return Ok("Dados atualizados com sucesso.");
+                    }
+                    else
+                    {
+                        _logger.LogError("Ocampos dever ser preenchidos corretamente.");
+                        return StatusCode(StatusCodes.Status400BadRequest, new ErrorResponseDto()
+                        {
+                            Description = "Ocampos dever ser preenchidos corretamente.",
+                            Status = StatusCodes.Status400BadRequest
+                        });
+                    }
+                    
+                }
+                else
+                {
+                    _logger.LogError("Usuário inválido.");
+                    return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponseDto()
+                    {
+                        Description = "suário inválido.",
+                        Status = StatusCodes.Status500InternalServerError
+                    });
+                }
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError("Ocorreu o seguinte erro ao atualizar usuário: " + ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponseDto()
+                {
+                    Description = "Ocorreu o seguinte erro ao atualizar usuário: " + ex.Message,
+                    Status = StatusCodes.Status500InternalServerError
+                });
+            }
         }
 
     }

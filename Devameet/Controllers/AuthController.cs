@@ -34,7 +34,7 @@ namespace Devameet.Controllers
                 if(!string.IsNullOrEmpty(loginRequestDto.Login) || !string.IsNullOrEmpty(loginRequestDto.Password) && 
                     !string.IsNullOrWhiteSpace(loginRequestDto.Login) || !string.IsNullOrWhiteSpace(loginRequestDto.Password))
                 {
-                    User user = _userRepository.GetUserByLoginPassoword(loginRequestDto.Login.ToLower(), loginRequestDto.Password); 
+                    User user = _userRepository.GetUserByLoginPassword(loginRequestDto.Login.ToLower(), MD5Utils.GenerateHashMd5(loginRequestDto.Password)); 
 
                     if (user != null) 
                     {

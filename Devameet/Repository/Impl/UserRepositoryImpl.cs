@@ -16,7 +16,7 @@ namespace Devameet.Repository.Impl
 
         }
 
-        public User GetUserByLoginPassoword(string login, string password)
+        public User GetUserByLoginPassword(string login, string password)
         {
             return _context.Users.FirstOrDefault(u => u.Email == login && u.Password == password);
         }
@@ -24,6 +24,12 @@ namespace Devameet.Repository.Impl
         public void Save(User user) // Adiciona usuario e salva no banco de dados
         {
             _context.Add(user);
+            _context.SaveChanges();
+        }
+
+        public void UpdateUser(User user)
+        {
+            _context.Update(user);
             _context.SaveChanges();
         }
 

@@ -1,5 +1,7 @@
 using Devameet;
 using Devameet.Models;
+using Devameet.Repository;
+using Devameet.Repository.Impl;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -14,8 +16,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+
 var connectstring = builder.Configuration.GetConnectionString("DefaultConnectString"); //Variavel de instancia da Connection String
 builder.Services.AddDbContext<DevameetContext>(option => option.UseSqlServer(connectstring)); //Acesso ao banco de dados sempre que iniciado o programa.
+
+builder.Services.AddScoped<IUserRepository, UserRepositoryImpl>(); //Dependency injection
 
 var jwtsettings = builder.Configuration.GetRequiredSection("JWT").Get<JWTKey>();
 
@@ -47,6 +53,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
