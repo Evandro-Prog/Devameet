@@ -22,6 +22,9 @@ var connectstring = builder.Configuration.GetConnectionString("DefaultConnectStr
 builder.Services.AddDbContext<DevameetContext>(option => option.UseSqlServer(connectstring)); //Acesso ao banco de dados sempre que iniciado o programa.
 
 builder.Services.AddScoped<IUserRepository, UserRepositoryImpl>(); //Dependency injection
+builder.Services.AddScoped<IMeetRepository, MeetRepositoryImpl>();
+builder.Services.AddScoped<IMeetObjectsRepository, MeetObjectsRepositoryImpl>();
+
 
 var jwtsettings = builder.Configuration.GetRequiredSection("JWT").Get<JWTKey>();
 
