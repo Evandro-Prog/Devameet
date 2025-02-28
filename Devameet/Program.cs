@@ -24,6 +24,7 @@ builder.Services.AddDbContext<DevameetContext>(option => option.UseSqlServer(con
 builder.Services.AddScoped<IUserRepository, UserRepositoryImpl>(); //Dependency injection
 builder.Services.AddScoped<IMeetRepository, MeetRepositoryImpl>();
 builder.Services.AddScoped<IMeetObjectsRepository, MeetObjectsRepositoryImpl>();
+builder.Services.AddScoped<IRoomRepository, RoomRepositoryImpl>();
 
 
 var jwtsettings = builder.Configuration.GetRequiredSection("JWT").Get<JWTKey>();

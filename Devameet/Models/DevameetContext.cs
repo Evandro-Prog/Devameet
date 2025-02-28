@@ -10,5 +10,6 @@ namespace Devameet.Models
         public DbSet<User> Users { get; set; } //Instacia para criar/ acessar o Model Users no Banco de Dados
         public DbSet<Meet> Meets { get; set; }
         public DbSet<MeetObjects> MeetObjects { get; set; }
+        public DbSet<Room> Rooms { get; set; }
     }
 }

@@ -69,7 +69,7 @@ namespace Devameet.Controllers
 
                     _meetRepository.CreateMeet(meet);
 
-                    return Ok($"Sala de reuniao " + meet.Name + " criada com sucesso.");
+                    return Ok("Sala de reuniao " + meet.Name + " criada com sucesso.");
                 }
                 
             }
