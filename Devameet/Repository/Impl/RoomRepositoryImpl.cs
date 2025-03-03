@@ -14,6 +14,14 @@ namespace Devameet.Repository.Impl
             _context = context;
         }
 
+        public async Task DeleteUserPosition(string clientId)
+        {
+            var room = await _context.Rooms.Where(r =>  r.ClientId == clientId).FirstOrDefaultAsync();
+
+            _context.Rooms.Remove(room);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<ICollection<PositionDto>> ListUsersPosition(string link)
         {
             var meet = await _context.Meets.Where(m => m.Link == link).FirstOrDefaultAsync();
@@ -33,6 +41,16 @@ namespace Devameet.Repository.Impl
                 ClientId = r.ClientId
             }).ToList();
 
+        }
+
+        public async Task UpdateUserMute(MuteDto mutedto)
+        {
+            var meet = await _context.Meets.Where(m => m.Link == mutedto.Link).FirstOrDefaultAsync();
+            var room = await _context.Rooms.Where(r => r.MeetId == meet.Id && r.UserId == int.Parse(mutedto.UserId)).FirstOrDefaultAsync();
+
+            room.Muted = mutedto.Muted;
+
+            await _context.SaveChangesAsync();      
         }
 
         public async Task UpdateUserPosition(int userid, string link, string clientId, UpdatePositionDto updatePositionDto)
